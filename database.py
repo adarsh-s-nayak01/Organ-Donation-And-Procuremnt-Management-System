@@ -6,7 +6,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="password",
-    database="organ_donation"
+    database="dbms_project_org_donation"
 )
 c = mydb.cursor()
 
@@ -43,8 +43,8 @@ def get_patient(Patient_name):
 
 
 # def edit_patient_data(new_patient_id, new_patient_name, new_phone_no,new_organ_req,new_location,new_org_id,patient_id, patient_name, phone_no,organ_req,location,org_id):
-def edit_patient_data(new_patient_id,new_patient_name,new_phone_no,new_organ_req,new_location,Patient_id,Patient_name,Phone_no,organ_req,Location):
-    c.execute("UPDATE Patient SET Patient_id=%s, Patient_name=%s, Phone_no=%s,organ_req=%s,Location=%s WHERE Patient_id=%s and Patient_name=%s and Phone_no=%s and organ_req=%s and Location=%s", (new_patient_id,new_patient_name,new_phone_no,new_organ_req,new_location,Patient_id,Patient_name,Phone_no,organ_req,Location))
+def edit_patient_data(new_patient_id,new_patient_name,new_phone_no,new_organ_req,new_location,new_Org_id,Patient_id,Patient_name,Phone_no,organ_req,Location,Org_id):
+    c.execute("UPDATE Patient SET Patient_id=%s, Patient_name=%s, Phone_no=%s,organ_req=%s,Location=%s,Org_id=%s WHERE Patient_id=%s and Patient_name=%s and Phone_no=%s and organ_req=%s and Location=%s and Org_id=%s", (new_patient_id,new_patient_name,new_phone_no,new_organ_req,new_location,new_Org_id,Patient_id,Patient_name,Phone_no,organ_req,Location,Org_id))
     mydb.commit()
     # data = c.fetchall()
     # return data
@@ -55,23 +55,31 @@ def delete_data(patient_name):
     mydb.commit()
 
 
-def execute_query(query):
-    try:
-        c.execute(query)
-        if query.split()[0].lower() not in ['select','show']:
-            mydb.commit()
-        data = c.fetchall()
-        return [data,c.column_names]
-    except BaseException as e:
-        if str(e)=='No result set to fetch from.':
-            st.success('querry successful')
-            return 1
-        st.error(e)
-        return 0
+def query_executor(raw_code):
+	c.execute(raw_code)
+	data = c.fetchall()
+	return data
+# def execute_query(query):
+#     try:
+#         c.execute(query)
+#         if query.split()[0].lower() not in ['select','show']:
+#             mydb.commit()
+#         data = c.fetchall()
+#         return [data,c.column_names]
+#     except BaseException as e:
+#         if str(e)=='No result set to fetch from.':
+#             st.success('querry successful')
+#             return 1
+#         st.error(e)
+#         return 0
 # alter  select * from table
 # update select * from table
 # delete show tables
 # create show tables
+
+
+
+
 
 def show_tables():
     c.execute('show tables')
